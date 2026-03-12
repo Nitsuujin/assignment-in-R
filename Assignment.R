@@ -33,7 +33,7 @@ plt_boxplot <- function(data, x, y, title) {
 # a function that plots a line plot
 plt_line <- function(data, x, y, title) {
   ggplot(data, aes({{x}}, {{y}})) + 
-    geom_line() + expand_limits(y=0) + ggtitle +
+    geom_line(color="skyblue") + expand_limits(y=0) + ggtitle(title) +
     theme_minimal()
 }
 
@@ -52,7 +52,7 @@ table_1 <- df %>%
   group_by(Sex, Purpose) %>%
   summarize(totalCredamount = sum(Credit_amount)) %>%
   pivot_wider(names_from = Purpose, values_from = totalCredamount)
-  
+
 # grouping by sex per total credit amount
 total_cred_amount <- df %>% 
   group_by(Sex) %>%
@@ -63,6 +63,11 @@ avg_duration_job <- df %>%
   group_by(Job) %>% 
   summarize(meanDuration = mean(Duration)) %>%
   arrange(desc(meanDuration))
+
+avg_duration_age <- df %>%
+  group_by(Age) %>%
+  summarize(meanDuration = mean(Duration)) %>%
+  arrange(Age)
 
 avg_duration_job # in average, the highly skilled jobs have higher credit duration
 # standardize the labels in sex category
@@ -97,3 +102,4 @@ plt_hist(df, Duration, "Duration of Credit Amounts")
 ggcorrplot(cor(df[sapply(df, is.numeric)]), lab = TRUE)
 
 plt_scatter(df, Duration, Credit_amount, "Duration vs Credit Amount")
+plt_line(avg_duration_age, Age, meanDuration, "Average Credit Duration by Age")
